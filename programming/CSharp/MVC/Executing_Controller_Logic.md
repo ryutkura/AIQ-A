@@ -4,15 +4,15 @@
 
 ここで最も重要なルールがあります。それは**「他の[[C#]]のコードから、[[Controller]]のメソッドを直接呼び出してはいけない」**ということです。（例：別のクラスから `var c = new User[[Controller]](); c.Profile(5);` と書くのは絶対NGです）
 
-[[Controller]]はあくまで「Webからのリクエスト（HTTP）を受け取る専用の窓口」だからです。
+[[Controller]]はあくまで「Webからのリクエスト（[[HTTP]]）を受け取る専用の窓口」だからです。
 
 では、目的別にどうすればいいかを見ていきましょう。
 
 ---
 
-## パターン1：「このURLにアクセスした時に実行させたい」場合（URLのカスタマイズ）
+## パターン1：「この[[URL]]にアクセスした時に実行させたい」場合（[[URL]]のカスタマイズ）
 
-デフォルトの `/User/Profile/5` というURLではなく、例えば `/mypage/5` というURLでアクセスが来た時に `User[[Controller]].Profile(5)` を実行させたい場合です。
+デフォルトの `/User/Profile/5` という[[URL]]ではなく、例えば `/mypage/5` という[[URL]]でアクセスが来た時に `User[[Controller]].Profile(5)` を実行させたい場合です。
 
 この場合は、おっしゃる通り**「[[ルーティング]]の設定」**を弄るのが大正解です。
 
@@ -21,7 +21,7 @@
 ```csharp
 public class User[[Controller]] : [[Controller]]
 {
-    // [Route]属性をつけることで、「/mypage/5」というURLとこのメソッドを紐づける！
+    // [Route]属性をつけることで、「/mypage/5」という[[URL]]とこのメソッドを紐づける！
     [Route("mypage/{id}")]
     public IActionResult Profile(int id)
     {
@@ -35,7 +35,7 @@ public class User[[Controller]] : [[Controller]]
 
 例えば、「ログイン処理（Loginメソッド）」が終わった後に、自動的に `Profile(5)` を実行して画面を表示させたい場合です。
 
-この場合は、**リダイレクト（RedirectToAction）**という機能を使います。これは、サーバー側からブラウザに対して「今度はこのURLにアクセスし直してね」と命令を出す機能です。
+この場合は、**リダイレクト（RedirectToAction）**という機能を使います。これは、サーバー側からブラウザに対して「今度はこの[[URL]]にアクセスし直してね」と命令を出す機能です。
 
 ```csharp
 public class Auth[[Controller]] : [[Controller]]
@@ -98,7 +98,7 @@ public class NightBatch
 
 ### まとめ
 
-1. **URLを変えたい** → [[ルーティング]]（`[Route]` 属性など）を使う。
+1. **[[URL]]を変えたい** → [[ルーティング]]（`[Route]` 属性など）を使う。
 2. **処理後に画面を移動させたい** → `RedirectToAction` を使う。
 3. **ロジックを使い回したい** → 中身を `Service` クラスに抜き出して、それを呼ぶ。
 

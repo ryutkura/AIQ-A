@@ -16,7 +16,8 @@ def main():
         "C言語", "Python", "Java", "C#",
         "ルーティング", "コントローラー", "Controller", 
         "ビュー", "View", "モデル", "Model", "データベース", "Database", "DAO", "MVC",
-        "GET", "POST"
+        "GET", "POST","MACアドレス", "IPアドレス", "URL", "URI", "DNS", "TCP/IP", "HTTP", "HTTPS",
+        "AI", "人工知能", "機械学習", "ディープラーニング", "自然言語処理", "NLP", "ニューラルネットワーク", "CNN", "RNN", "Transformer", "BERT", "GPT"
     ]
     # ソート（長いものから置換するため）
     keywords = sorted(keywords, key=len, reverse=True)
