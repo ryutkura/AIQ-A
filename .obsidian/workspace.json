@@ -178,6 +178,15 @@
   },
   "active": "8aadff8c10df6052",
   "lastOpenFiles": [
+    "image/cyclic_difference_matrix.png",
+    "image/image.png",
+    "image",
+    "math/LinearAlgebra/image.png",
+    "math/LinearAlgebra/vectors_and_planes_basics.md",
+    "math/vectors_and_planes_basics.md",
+    "math/LinearAlgebra/linear_algebra_cyclic_difference.md",
+    "math/linear_algebra_cyclic_difference.md",
+    "_temp_clipboard.png",
     "programming/Python/log_directory_management.md",
     "README.md",
     "AI_INSTRUCTIONS.md",
@@ -185,7 +194,6 @@
     "tools/get_clipboard.py",
     "tools",
     "programming/Python/CLI_Image_Processing.md",
-    "_temp_clipboard.png",
     "software_engineering/RequirementsDefinition/Hearing_Preparation.md"
   ]
 }

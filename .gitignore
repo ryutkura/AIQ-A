@@ -1,0 +1,18 @@
+# 自分の環境に合わせて名前を追加・変更してください
+
+# Pythonが自動生成するキャッシュファイル
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+#Obsidianの自動生成ファイル
+.obsidian/
+
+# IDE/エディタが自動生成する設定フォルダ
+.vscode/
+.idea/
+
+# OSが自動生成するシステムファイル
+# Windows
+Thumbs.db
