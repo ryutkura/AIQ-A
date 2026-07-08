@@ -11,19 +11,19 @@
 ## 1. Pandasを使用する方法（推奨）
 
 [[Pandas]]はデータ分析のための強力なライブラリです。数行のコードで複雑な集計を行うことができます。
-事前に `pip install pandas` でインストールが必要です。
+事前に `pip install [[pandas]]` でインストールが必要です。
 
 ### コード例
 
 ```python
-import pandas as pd
+import [[pandas]] as pd
 
-def aggregate_csv_pandas(input_file, output_file):
+def aggregate_csv_[[pandas]](input_file, output_file):
     """
     Pandasを使用してCSVデータを集計し、新しいCSVに出力する
     """
     # 1. オリジンデータの読み込み
-    # df (DataFrame) という表形式のデータ構造として読み込みます
+    # df (DataFrame) という表形式の[[データ構造]]として読み込みます
     df = pd.read_csv(input_file, encoding='utf-8')
 
     # 2. データの集計
@@ -42,7 +42,7 @@ def aggregate_csv_pandas(input_file, output_file):
 
 # 実行例
 if __name__ == "__main__":
-    aggregate_csv_pandas('origin_data.csv', 'aggregated_data.csv')
+    aggregate_csv_[[pandas]]('origin_data.csv', 'aggregated_data.csv')
 ```
 
 ### 解説
@@ -67,7 +67,7 @@ def aggregate_csv_standard(input_file, output_file):
     """
     標準ライブラリを使用してCSVデータを集計し、新しいCSVに出力する
     """
-    # 集計用の辞書を用意（存在しないキーにアクセスした場合は0を返す）
+    # 集計用の[[辞書]]を用意（存在しないキーにアクセスした場合は0を返す）
     summary = defaultdict(int)
 
     # 1. オリジンデータの読み込みと集計
@@ -98,6 +98,6 @@ if __name__ == "__main__":
 ```
 
 ### 解説
-* `csv.DictReader()`: CSVの1行を、ヘッダーの列名をキーとした辞書（Dictionary）として読み込みます。どの列が何番目かを意識せずに名前でアクセスできるため安全です。
-* `defaultdict(int)`: 通常の辞書とは異なり、まだ登録されていないカテゴリの売上を加算しようとした際に、自動的に初期値（0）を設定してくれます。集計処理に非常に便利です。
-* `csv.writer()`: リスト（配列）のデータをCSV形式でファイルに書き込みます。`newline=''` を指定することで、Windows環境で余分な空行が挿入されるのを防ぎます。
+* `csv.DictReader()`: CSVの1行を、ヘッダーの列名をキーとした[[辞書]]（Dictionary）として読み込みます。どの列が何番目かを意識せずに名前でアクセスできるため安全です。
+* `defaultdict(int)`: 通常の[[辞書]]とは異なり、まだ登録されていないカテゴリの売上を加算しようとした際に、自動的に初期値（0）を設定してくれます。集計処理に非常に便利です。
+* `csv.writer()`: [[リスト]]（[[配列]]）のデータをCSV形式でファイルに書き込みます。`newline=''` を指定することで、[[Windows]]環境で余分な空行が挿入されるのを防ぎます。
