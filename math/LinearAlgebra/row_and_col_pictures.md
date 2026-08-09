@@ -1,3 +1,10 @@
+---
+type: qa
+tags: [math, linear-algebra]
+created: 2026-06-20
+updated: 2026-07-09
+status: seed
+---
 ![行の絵と列の絵](../../image/row_and_col_pictures.png)
 
 # 「行の絵」と「列の絵」が同じ解に行き着く理由

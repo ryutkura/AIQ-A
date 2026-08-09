@@ -1,8 +1,15 @@
+---
+type: qa
+tags: [infrastructure]
+created: 2026-07-12
+updated: 2026-07-12
+status: seed
+---
 ![Jupyter Notebook in Docker](../image/jupyter_docker_logs.png)
 
-# [[Docker]]のrunとstartにおけるログ表示の違い
+# Dockerのrunとstartにおけるログ表示の違い
 
-[[クリップボード]]の画像にある `[I 2026-07-08 ...]` という文字列は、Jupyter Notebookが出力する**Info（情報）ログ**です。
+クリップボードの画像にある `[I 2026-07-08 ...]` という文字列は、Jupyter Notebookが出力する**Info（情報）ログ**です。
 
 `docker run` を実行した時と、`docker start` を実行した時で画面の表示が違うのは、**[[Docker]][[コンテナ]]がフォアグラウンド（前面）で動くか、バックグラウンド（背面）で動くかというデフォルトの動作の違い**によるものです。
 
@@ -16,24 +23,24 @@
    一度停止した[[コンテナ]]を `docker start` で再開させる場合、デフォルトでは**バックグラウンド**で起動します。
    [[コンテナ]]自体（およびJupyter）は裏でしっかり起動して動いていますが、画面にはログが出力されず、すぐに通常のコマンド入力状態（プロンプト）に戻ります。Webサイト上で[[Python]]が動いているのは、まさに裏で正常にJupyterが起動している証拠です。
 
-## バックグラウンドの[[コンテナ]]のログを見たい場合
+## バックグラウンドのコンテナのログを見たい場合
 
 `docker start` で起動した後や、`docker run -d` で起動した[[コンテナ]]のログ（Iなんちゃらの画面）を確認したい場合は、以下のコマンドを使います。
 
-```[[bash]]
-# my_jupyter は画像にある[[コンテナ]]名
+```bash
+# my_jupyter は画像にあるコンテナ名
 docker logs my_jupyter
 ```
 
 リアルタイムで流れ続けるログを見たい場合は `-f` (follow) オプションをつけます。
-```[[bash]]
+```bash
 docker logs -f my_jupyter
 ```
 （表示を終了して元の画面に戻るには `Ctrl + C` を押します）
 
 ## よくある疑問と誤解
 
-### `docker logs -f` 中の `Ctrl + C` で[[コンテナ]]は止まらないの？
+### `docker logs -f` 中の `Ctrl + C` でコンテナは止まらないの？
 **止まりません。** 
 ここで `Ctrl + C` を押して終了するのは「ログを表示しているコマンド（`docker logs`）」だけです。裏で動いている[[コンテナ]]自体（Jupyter Notebook）はそのまま動き続けます。安全に元の画面に戻れるので安心してください。
 

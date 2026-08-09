@@ -1,6 +1,13 @@
+---
+type: qa
+tags: [math, linear-algebra]
+created: 2026-06-19
+updated: 2026-07-09
+status: seed
+---
 ![巡回する差分[[行列]]と幾何学](../../image/cyclic_difference_matrix.png)
 
-# 巡回する差分[[行列]]と「幾何学と代数の結びつき」について
+# 巡回する差分行列と「幾何学と代数の結びつき」について
 
 画像（[[線形代数]]のテキストの1ページ）の解説です。
 
