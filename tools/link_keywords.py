@@ -10,11 +10,12 @@ Obsidian キーワードリンク管理ツール（安全版）
   5. 既定では書き込まない。--write を明示した時だけファイルを更新する
 
 使い方:
-    python tools/link_keywords.py                    # 現状診断（書き込みなし）
-    python tools/link_keywords.py --repair           # 修復のプレビュー
-    python tools/link_keywords.py --repair --write   # 修復を実行
-    python tools/link_keywords.py --link   --write   # 新規リンク付与を実行
-    python tools/link_keywords.py --prune  --write   # 降格した語のリンクを解除
+    python tools/link_keywords.py                     # 現状診断（書き込みなし）
+    python tools/link_keywords.py --repair            # 修復のプレビュー
+    python tools/link_keywords.py --repair   --write  # 修復を実行
+    python tools/link_keywords.py --link     --write  # 新規リンク付与を実行
+    python tools/link_keywords.py --prune    --write  # 降格した語のリンクを解除
+    python tools/link_keywords.py --headings --write  # 見出し行のリンクを解除
 """
 
 import argparse
@@ -26,7 +27,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 KEYWORD_FILE = Path(__file__).resolve().parent / "keywords.txt"
 
-# 走査から除外するディレクトリ
 # 走査から除外: 生成物（moc）・データ置き場（tools）・投稿用（publish）は
 # 他のツールに書き換えさせない
 EXCLUDE_DIRS = {
@@ -70,6 +70,16 @@ WIKILINK = re.compile(r"\[\[[^\[\]]*\]\]")
 MD_LINK = re.compile(r"!?\[[^\]\n]*\]\([^)\n]*\)")
 BARE_URL = re.compile(r"https?://\S+")
 HTML_TAG = re.compile(r"</?[A-Za-z][^>\n]*>")
+
+
+def is_system_doc(text):
+    """frontmatter が type: system のファイル（README等）はリンク対象外。
+
+    取扱説明書がグラフのノードとして概念に繋がると、
+    知識の関係ではなく「文書がどの単語を含むか」が可視化されてしまう。
+    """
+    m = re.match(r"\A---\n(.*?)\n---\n", text, re.DOTALL)
+    return bool(m and re.search(r"^type:\s*system\s*$", m.group(1), re.M))
 
 
 def link_target(wikilink, known=()):
@@ -427,7 +437,7 @@ def main():
             if n:
                 detail.append(f"解除 {n}件 ({', '.join(sorted(removed))[:60]})")
 
-        if args.link:
+        if args.link and not is_system_doc(original):
             text, added = link_file(
                 text, keywords, fp.stem, first_only=not args.all_occurrences
             )

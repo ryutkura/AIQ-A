@@ -20,6 +20,7 @@ import argparse
 import collections
 import datetime
 import importlib.util
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -39,7 +40,22 @@ DOMAINS = {
     "infrastructure": "インフラ",
     "linux": "Linux",
     "software_engineering": "ソフトウェア工学",
+    "troubleshooting": "沼ログ",
 }
+
+FM = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
+
+
+def read_meta(path):
+    m = FM.match(path.read_text(encoding="utf-8"))
+    if not m:
+        return {}
+    meta = {}
+    for line in m.group(1).split("\n"):
+        if ":" in line:
+            k, v = line.split(":", 1)
+            meta[k.strip()] = v.strip().strip('"')
+    return meta
 
 
 def concept_names():
@@ -72,10 +88,50 @@ def link_to(rel):
     return f"[[{rel.with_suffix('').as_posix()}|{rel.stem}]]"
 
 
+STATUS_MARK = {"solved": "解決", "workaround": "回避", "unsolved": "未解決"}
+
+
+def build_troubleshoot_moc(mine, today):
+    """沼ログはエラー文で引けることが命なので、通常のMOCとは別の形にする。"""
+    lines = [
+        "---",
+        "type: moc",
+        "tags: [troubleshooting]",
+        f"created: {today}",
+        f"updated: {today}",
+        "---",
+        "",
+        "# 沼ログ",
+        "",
+        f"{len(mine)} 件",
+        "",
+        "> エラー文で引きたい時は、このページではなく **全文検索（Ctrl+Shift+F）** に",
+        "> エラーメッセージをそのまま貼るのが速い。",
+        "",
+        "| 日付 | ノート | エラー | 状態 |",
+        "| --- | --- | --- | --- |",
+    ]
+    rows = []
+    for rel, _ in mine:
+        meta = read_meta(ROOT / rel)
+        rows.append((
+            meta.get("created", ""),
+            link_to(rel),
+            (meta.get("error", "") or "—")[:50],
+            STATUS_MARK.get(meta.get("status", ""), meta.get("status", "—")),
+        ))
+    for row in sorted(rows, reverse=True):
+        lines.append("| " + " | ".join(row) + " |")
+    return "\n".join(lines) + "\n"
+
+
 def build_moc(domain, label, notes, today):
     mine = [(r, refs) for r, refs in notes if r.parts[0] == domain]
     if not mine:
         return None
+
+    if domain == "troubleshooting":
+        return build_troubleshoot_moc(mine, today)
 
     freq = collections.Counter()
     for _, refs in mine:
@@ -156,10 +212,16 @@ def build_home(notes, today, made):
         "path:/ -path:concepts -path:moc",
         "```",
         "",
-        "### 沼ログ",
+        "### 未解決の沼",
         "",
         "```query",
-        "path:troubleshooting",
+        'path:troubleshooting ["status":"unsolved"]',
+        "```",
+        "",
+        "### 未整理（inbox）",
+        "",
+        "```query",
+        "path:inbox",
         "```",
         "",
         "---",
