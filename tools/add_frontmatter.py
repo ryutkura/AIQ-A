@@ -34,7 +34,7 @@ lk = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(lk)
 
 # ノートではなくシステム文書として扱うファイル
-SYSTEM_FILES = {"README.md", "AI_INSTRUCTIONS.md", "CLAUDE.md", "MEMORY.md"}
+SYSTEM_FILES = {"README.md", "AI_INSTRUCTIONS.md", "CLAUDE.md", "AGENTS.md", "MEMORY.md"}
 
 # フォルダ名 → タグ名の例外指定
 TAG_OVERRIDE = {
