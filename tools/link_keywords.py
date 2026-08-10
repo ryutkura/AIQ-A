@@ -124,42 +124,57 @@ class Masker:
         return text
 
 
-def iter_lines_with_context(text):
-    """(行, 種別) を返す。種別: 'frontmatter' | 'fence' | 'code' | 'text'"""
+# [[ ]] が言語自身の正当な構文であるため、絶対に書き換えてはいけないコードブロック。
+# 例: Mermaid の G[["ラベル"]] はサブルーチン型ノードを表す記法であり、
+#     これを剥がすと図の形状が変わってしまう。
+VERBATIM_LANGS = {"mermaid"}
+
+
+def iter_lines_with_lang(text):
+    """(行, 種別, フェンスの言語) を返す。
+
+    種別: 'frontmatter' | 'fence' | 'code' | 'text'
+    """
     lines = text.split("\n")
     in_fm = False
     in_fence = False
     fence_marker = None
+    lang = ""
 
     if lines and lines[0].strip() == "---":
         in_fm = True
-        yield lines[0], "frontmatter"
+        yield lines[0], "frontmatter", ""
         lines = lines[1:]
-        offset = 1
-    else:
-        offset = 0
 
     for line in lines:
         if in_fm:
-            yield line, "frontmatter"
+            yield line, "frontmatter", ""
             if line.strip() == "---":
                 in_fm = False
             continue
 
-        m = re.match(r"^\s*(```+|~~~+)", line)
+        m = re.match(r"^\s*(```+|~~~+)\s*([A-Za-z0-9_+-]*)", line)
         if m:
             if not in_fence:
                 in_fence = True
                 fence_marker = m.group(1)[:3]
-                yield line, "fence"
+                lang = m.group(2).lower()
+                yield line, "fence", lang
                 continue
             elif m.group(1)[:3] == fence_marker:
                 in_fence = False
                 fence_marker = None
-                yield line, "fence"
+                yield line, "fence", lang
+                lang = ""
                 continue
 
-        yield line, ("code" if in_fence else "text")
+        yield line, ("code" if in_fence else "text"), (lang if in_fence else "")
+
+
+def iter_lines_with_context(text):
+    """(行, 種別) を返す。種別: 'frontmatter' | 'fence' | 'code' | 'text'"""
+    for line, kind, _lang in iter_lines_with_lang(text):
+        yield line, kind
 
 
 # ==============================================================
@@ -209,10 +224,14 @@ def repair_file(text):
     text, stats["nested"] = unnest(text)
 
     out = []
-    for line, kind in iter_lines_with_context(text):
+    for line, kind, lang in iter_lines_with_lang(text):
         if kind == "text":
             line, k = fix_boundaries(line)
             stats["boundary"] += k
+        if lang in VERBATIM_LANGS and kind in ("code", "fence"):
+            # Mermaid 等では [[ ]] が正当な構文なので触らない
+            out.append(line)
+            continue
         if kind in ("code", "fence", "frontmatter"):
             n = len(WIKILINK.findall(line))
             if n:
@@ -330,11 +349,14 @@ def diagnose(files, keywords):
 
     for fp in files:
         text = fp.read_text(encoding="utf-8")
+        if is_system_doc(text):
+            continue  # 取扱説明書のコード例は「汚染」ではない
         nested += len(NESTED.findall(text))
         seen = set()
-        for line, kind in iter_lines_with_context(text):
+        for line, kind, lang in iter_lines_with_lang(text):
             if kind in ("code", "fence"):
-                ctx["コードブロック内"] += len(WIKILINK.findall(line))
+                if lang not in VERBATIM_LANGS:  # Mermaid 等は誤検出なので数えない
+                    ctx["コードブロック内"] += len(WIKILINK.findall(line))
                 continue
             if kind == "frontmatter":
                 continue
