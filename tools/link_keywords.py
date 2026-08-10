@@ -415,7 +415,9 @@ def main():
         text = original
         detail = []
 
-        if args.repair:
+        # システム文書（README等）はリンク記法そのものを説明するため、
+        # コード例の中の [[...]] は「破損」ではなく意図的な記述。修復対象外にする。
+        if args.repair and not is_system_doc(original):
             text, st = repair_file(text)
             for k in totals:
                 totals[k] += st[k]

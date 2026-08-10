@@ -11,7 +11,7 @@ updated: 2026-08-10
 
 ## 主要な概念
 
-[[Linux]] · [[Raspberry Pi]] · [[SSH]] · [[IoT]] · [[アーキテクチャ]] · [[公開鍵]] · [[Python]] · [[Docker]] · [[データベース]] · [[カーネル]] · [[API]] · [[シェル]] · [[Model]] · [[C言語]] · [[AWS]] · [[HTTPS]]
+[[Linux]] · [[Raspberry Pi]] · [[Docker]] · [[SSH]] · [[データベース]] · [[Python]] · [[アーキテクチャ]] · [[IoT]] · [[公開鍵]] · [[カーネル]] · [[API]] · [[シェル]] · [[Model]] · [[C言語]] · [[AWS]] · [[HTTPS]]
 
 ## ノート
 

@@ -40,6 +40,7 @@ DOMAINS = {
     "infrastructure": "インフラ",
     "linux": "Linux",
     "software_engineering": "ソフトウェア工学",
+    "textbooks": "教科書",
     "troubleshooting": "沼ログ",
 }
 
@@ -210,6 +211,12 @@ def build_home(notes, today, made):
         "",
         "```query",
         "path:/ -path:concepts -path:moc",
+        "```",
+        "",
+        "### 未読の章（教科書）",
+        "",
+        "```query",
+        'path:textbooks ["status":"unread"]',
         "```",
         "",
         "### 未解決の沼",

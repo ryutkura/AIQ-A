@@ -38,7 +38,9 @@ SYSTEM_FILES = {"README.md", "AI_INSTRUCTIONS.md", "CLAUDE.md", "AGENTS.md", "ME
 
 # フォルダ名 → タグ名の例外指定
 TAG_OVERRIDE = {
-    "General": None,      # 汎用フォルダはタグにしない
+    "General": None,       # 汎用フォルダはタグにしない
+    "textbooks": None,     # 本のタイトルだけをタグにする
+    "troubleshooting": None,
     "CSharp": "csharp",
     "C": "c",
 }
@@ -65,9 +67,12 @@ def note_type(rel_path):
     if rel_path.name in SYSTEM_FILES:
         return "system"
     top = rel_path.parts[0] if len(rel_path.parts) > 1 else ""
-    return {"concepts": "concept", "troubleshooting": "troubleshoot", "moc": "moc"}.get(
-        top, "qa"
-    )
+    return {
+        "concepts": "concept",
+        "troubleshooting": "troubleshoot",
+        "textbooks": "textbook",
+        "moc": "moc",
+    }.get(top, "qa")
 
 
 def git_dates():
@@ -111,7 +116,10 @@ def build(rel_path, dates):
     if tags:
         lines.append(f"tags: [{', '.join(tags)}]")
     lines += [f"created: {created}", f"updated: {updated}"]
-    if t not in ("system", "moc"):
+    if t == "textbook":
+        # 教科書の章は「育てる」ものではなく「読む」もの。読了管理に使う
+        lines.append("status: unread")
+    elif t not in ("system", "moc"):
         lines.append("status: seed")
     lines += ["---", ""]
     return "\n".join(lines)
