@@ -16,3 +16,8 @@ __pycache__/
 # OSが自動生成するシステムファイル
 # Windows
 Thumbs.db
+
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.trash/
