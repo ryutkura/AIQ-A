@@ -1,8 +1,8 @@
 ---
 type: moc
 tags: [linux]
-created: 2026-08-10
-updated: 2026-08-10
+created: 2026-09-13
+updated: 2026-09-13
 ---
 
 # Linux
@@ -11,7 +11,7 @@ updated: 2026-08-10
 
 ## 主要な概念
 
-[[Linux]] · [[Raspberry Pi]] · [[IoT]] · [[データベース]] · [[SSH]] · [[公開鍵]] · [[Docker]] · [[Python]] · [[アーキテクチャ]] · [[カーネル]] · [[API]] · [[シェル]] · [[C言語]] · [[Model]] · [[HTTPS]] · [[AWS]] · [[GitHub]]
+[[Linux]] · [[Raspberry Pi]] · [[Docker]] · [[IoT]] · [[Python]] · [[SSH]] · [[公開鍵]] · [[アーキテクチャ]] · [[データベース]] · [[カーネル]] · [[API]] · [[シェル]] · [[C言語]] · [[Model]] · [[HTTPS]] · [[AWS]] · [[GitHub]]
 
 ## ノート
 
